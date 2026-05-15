@@ -38,3 +38,5 @@ allClearButton.addEventListener("click", () => {
   calculator.clear();
   calculator.updateDisplay();
 });
+
+// 26:38
