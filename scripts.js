@@ -18,7 +18,42 @@ class Calculator {
     this.clear();
   }
 
+  calculate() {
+    let result;
+
+    // Float Values
+    const _previousOperand = parseFloat(this.previousOperand);
+    const _currentOperand = parseFloat(this.currentOperand);
+
+    if (isNaN(_previousOperand) || isNaN(_currentOperand)) return;
+
+    switch (this.operation) {
+      case "+":
+        result = _previousOperand + _currentOperand;
+        break;
+      case "-":
+        result = _previousOperand - _currentOperand;
+        break;
+      case "÷":
+        result = _previousOperand / _currentOperand;
+        break;
+      case "*":
+        result = _previousOperand * _currentOperand;
+        break;
+      default:
+        return;
+    }
+
+    this.currentOperand = result;
+    this.operation = undefined;
+    this.previousOperand = "";
+  }
+
   chooseOperation(operation) {
+    if (this.previousOperand !== "") {
+      this.calculate();
+    }
+
     this.operation = operation;
     this.previousOperand = this.currentOperand;
     this.currentOperand = "";
@@ -36,7 +71,7 @@ class Calculator {
   }
 
   updateDisplay() {
-    this.previousOperandTextElement.innerText = this.previousOperand;
+    this.previousOperandTextElement.innerText = `${this.previousOperand} ${this.operation || ""}`;
     this.currentOperandTextElement.innerText = this.currentOperand;
   }
 }
@@ -49,6 +84,13 @@ const calculator = new Calculator(
 for (const numberButton of numberButtons) {
   numberButton.addEventListener("click", () => {
     calculator.appendNumber(numberButton.innerText);
+    calculator.updateDisplay();
+  });
+}
+
+for (const operationButton of operationButtons) {
+  operationButton.addEventListener("click", () => {
+    calculator.chooseOperation(operationButton.innerText);
     calculator.updateDisplay();
   });
 }
