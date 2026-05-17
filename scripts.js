@@ -15,6 +15,18 @@ class Calculator {
   constructor(previousOperandTextElement, currentOperandTextElement) {
     this.previousOperandTextElement = previousOperandTextElement;
     this.currentOperandTextElement = currentOperandTextElement;
+    this.clear();
+  }
+
+  chooseOperation(operation) {
+    this.operation = operation;
+    this.previousOperand = this.currentOperand;
+    this.currentOperand = "";
+  }
+
+  appendNumber(number) {
+    if (this.currentOperand.includes(".") && number === ".") return;
+    this.currentOperand = `${this.currentOperand}${number.toString()}`;
   }
 
   clear() {
@@ -34,9 +46,14 @@ const calculator = new Calculator(
   currentOperandTextElement,
 );
 
+for (const numberButton of numberButtons) {
+  numberButton.addEventListener("click", () => {
+    calculator.appendNumber(numberButton.innerText);
+    calculator.updateDisplay();
+  });
+}
+
 allClearButton.addEventListener("click", () => {
   calculator.clear();
   calculator.updateDisplay();
 });
-
-// 26:38
